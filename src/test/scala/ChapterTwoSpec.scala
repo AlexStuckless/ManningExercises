@@ -46,4 +46,15 @@ class ChapterTwoSpec extends FlatSpec with Matchers {
     chapter2.isSorted(sortedArray, (x: Int, y:Int) => x > y) should be (false)
   }
 
+  "A curried function" should "create a useable partial function" in {
+    val chapter2 = new ChapterTwo
+    val multiply = chapter2.curry((x:Int, y:Int) => x*y)
+    multiply(3)(6) should be(18)
+  }
+
+  "A uncurried function" should "create a regular function from a partial one" in {
+    val chapter2 = new ChapterTwo
+    val add = chapter2.uncurry((x:Int) => x + (_:Int))
+    add(2,4) should be(6)
+  }
 }

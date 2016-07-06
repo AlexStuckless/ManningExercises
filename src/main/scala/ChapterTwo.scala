@@ -3,6 +3,7 @@
   */
 class ChapterTwo {
 
+  //ex 2.1
   def fib(n: Int): Int = {
     if(n < 0){
       -1
@@ -18,6 +19,7 @@ class ChapterTwo {
     }
   }
 
+  //ex 2.2
   def isSorted[A](as: Array[A], ordered: (A,A) => Boolean): Boolean = {
     val arraySize = as.length
     def isSortedRecursion(arrayIndex: Int): Boolean = {
@@ -30,6 +32,17 @@ class ChapterTwo {
       }
     }
     isSortedRecursion(0)
+  }
+
+  //ex 2.3
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) = {
+    a :A => f(a, _ :B)
+  }
+
+  //ex 2.4
+  //this is like f: A => (B => C)
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C = {
+    (a:A, b:B) => f(a)(b)
   }
 
 }
