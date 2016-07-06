@@ -57,4 +57,10 @@ class ChapterTwoSpec extends FlatSpec with Matchers {
     val add = chapter2.uncurry((x:Int) => x + (_:Int))
     add(2,4) should be(6)
   }
+
+  "A composed function" should "act like the product of both transformations" in {
+    val chapter2 = new ChapterTwo
+    val stringTransformer = chapter2.compose((b:String) => b + " lightening", (a:String) => a + " magik")
+    stringTransformer("puppy") should be("puppy magik lightening")
+  }
 }
