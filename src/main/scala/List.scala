@@ -87,5 +87,38 @@ object List {
 
   def lengthLeft[A](l: List[A]): Int = foldLeft(l, 0)((runningTotal, _) => runningTotal + 1)
 
+  /*This one was really hard for me - my underlying understanding of folds is not the greatest. :(
+  This was my attempt but it was just like write fold left a different way instead of it actually being a
+  fold right- I can understand why - I haven't actually 'reversed' the direction of the fold, just modified the
+  function:
+  def foldRightFromFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = {
+    foldLeft(as,z)((b:B, a:A) => f(a,b))
+  }
 
+  def foldLeftFromFoldRight[A,B](as: List[A], z: B)(f: (B, A) => B): B = {
+    foldRight(as, z)((a:A, b:B) => f(b,a))
+  }
+
+  I needed to look up the answer and this stackoverflow answer was pretty useful:
+  http://stackoverflow.com/questions/17136794/foldleft-using-foldright-in-scala
+  */
+
+  def foldLeftViaFoldRight[A,B](l: List[A], z: B)(f: (B,A) => B): B =
+    foldRight(l, (b:B) => b)((a,g) => b => g(f(b,a)))(z)
+
+  def foldRightViaFoldLeft[A,B](l: List[A], z: B)(f: (A, B) => B): B =
+    foldLeft(l, (b:B) => b)((g,a) => b => g(f(a,b)))(z)
+
+  def append[A](a1: List[A], a2: List[A]): List[A] = {
+    foldRight(a1, a2)(Cons(_, _))
+  }
+
+  def concenateLists[A](listOfLists: List[List[A]]): List[A] = {
+    foldRight(listOfLists, Nil:List[A])(append(_,_))
+  }
+
+  def addOne(l: List[Int]): List[Int] = {
+    foldRight(l, Nil:List[Int])((x:Int, y:List[Int]) => Cons(x+1, y))
+  }
 }
+

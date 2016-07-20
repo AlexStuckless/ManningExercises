@@ -134,6 +134,24 @@ class ListSpec extends FlatSpec with Matchers {
     lengthLeft(Nil) should be(0)
   }
 
+  "A list constructor folded right (from a foldLeft) on a list" should "return the same list" in {
+    foldRightViaFoldLeft(List(1,2,3), Nil:List[Int])(Cons(_,_)) should be(List(1,2,3))
+  }
 
+  "A list constructor folded left (from a foldRight) on a list" should "return the reversed list" in {
+    foldLeftViaFoldRight(List(1,2,3), Nil:List[Int])((list, element) => Cons(element,list)) should be(List(3,2,1))
+  }
+
+  "A list that has another list appended to it" should "have its elements appear first and the other's second" in {
+    append(List(1,2), List(3,4)) should be(List(1,2,3,4))
+  }
+
+  "A list of lists being concenated" should "have the lists merged in order into one big list" in {
+    concenateLists(List(List(1,2,3),List(4,5,6),List(7,8,9))) should be(List(1,2,3,4,5,6,7,8,9))
+  }
+
+  "A list that has addOne called on it" should "return a new list where each element has been incremented" in {
+    addOne(List(1,2,3)) should be(List(2,3,4))
+  }
 
 }
