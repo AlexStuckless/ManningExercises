@@ -120,5 +120,70 @@ object List {
   def addOne(l: List[Int]): List[Int] = {
     foldRight(l, Nil:List[Int])((x:Int, y:List[Int]) => Cons(x+1, y))
   }
+
+  def doublesToStrings(l: List[Double]): List[String] =
+    foldRight(l, Nil:List[String])((d:Double, ls:List[String]) => Cons(d.toString, ls))
+
+  def map[A,B](as: List[A])(f: A => B): List[B] =
+    foldRight(as, Nil:List[B])((a:A, lb:List[B]) => Cons(f(a),lb))
+
+  //this looks jank as hell - can I do it in a nicer way??
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = {
+    foldRight(as,Nil:List[A])((a:A, l:List[A]) => {
+      if(f(a))
+        Cons(a, l)
+      else
+        l
+    })
+  }
+
+  def removeOdds(as: List[Int]): List[Int] =
+    filter(as)(a => a % 2 == 0)
+
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = {
+    foldRight(as, Nil:List[B])((a:A, lb:List[B]) => append(f(a), lb))
+  }
+
+  //still super ass janky - got to be a better way
+  def filter2[A](as: List[A])(f: A => Boolean): List[A] = {
+    flatMap(as)((a:A) => {
+      if(f(a)) List(a)
+      else Nil
+    })
+  }
+
+
+  //went full retard - dont know how to do with a fold/map :(
+  //can you even ??
+  def addLists(l1: List[Int], l2: List[Int]): List[Int] = (l1, l2) match{
+    case (Cons(h1,t1), Cons(h2, t2)) => Cons(h1+h2, addLists(t1,t2))
+    case (Cons(h1,t1), Nil) => Cons(h1,t1)
+    case (Nil, Cons(h2,t2)) => Cons(h2,t2)
+    case (Nil,Nil) => Nil
+  }
+
+  //had originally planned cases like above for uneven length lists but didn't have a way to use function f
+  //to create the C type
+  def zipWith[A,B,C](l1: List[A], l2: List[B])(f: (A,B) => C): List[C] = (l1, l2) match{
+    case (Cons(h1,t1), Cons(h2, t2)) => Cons(f(h1,h2), zipWith(t1,t2)(f))
+    case _ => Nil:List[C]
+  }
+
+  //sooooo jank O(n^2)
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+
+    def checkForSubsequence(interiorSup: List[A], interiorSub: List[A]): Boolean = (interiorSup, interiorSub) match {
+      case (Cons(h1,t1), Cons(h2,t2)) if h1 == h2 => checkForSubsequence(t1,t2)
+      case (_, Nil) => true
+      case (_,_) => false
+    }
+    if(checkForSubsequence(sup, sub))
+      true
+    else if(sup != Nil)
+      hasSubsequence(tail(sup), sub)
+    else
+      false
+  }
+
 }
 

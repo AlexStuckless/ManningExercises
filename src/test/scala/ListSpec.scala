@@ -154,4 +154,52 @@ class ListSpec extends FlatSpec with Matchers {
     addOne(List(1,2,3)) should be(List(2,3,4))
   }
 
+  "A list of doubles" should "be convertable to a list of strings" in {
+    doublesToStrings(List(1.2, 3.4, 0.567)) should be(List("1.2", "3.4", "0.567"))
+  }
+
+  "A map on a list" should "transform each element into a new list" in {
+    map(List(1,2,3))(x => x*2) should be(List(2,4,6))
+  }
+
+  "A filtered list" should "return only the elements that match the predicate" in {
+    filter(List(1,2,3))(x => x % 2 == 1) should be(List(1,3))
+  }
+
+  "A list that has removeOdds called on it" should "return a list with all the odds removed" in {
+    removeOdds(List(1,2,3)) should be(List(2))
+  }
+
+  "A list that has flat map called on it" should "return a list with elements transformed into lists and flattened" in {
+    flatMap(List(1,2,3))(i => List(i,i)) should be(List(1,1,2,2,3,3))
+  }
+
+  "A filtered(2) list" should "return only the elements that match the predicate" in {
+    filter2(List(1,2,3))(x => x % 2 == 1) should be(List(1,3))
+  }
+
+  "Two lists added together" should "return one list with the elements added together" in {
+    addLists(List(1,2,3),List(4,5,6)) should be(List(5,7,9))
+  }
+
+  "Two lists added together where the first is longer" should "return one list with the elements added together" in {
+    addLists(List(1,2,3),List(4,5)) should be(List(5,7,3))
+  }
+
+  "Two lists added together where the second is longer" should "return one list with the elements added together" in {
+    addLists(List(1,2),List(4,5,6)) should be(List(5,7,6))
+  }
+
+  "Two lists zipped together" should "return one list with the elements having a function applied to them" in {
+    zipWith(List(1,2,3),List(4,5,6))((x,y) => x*y) should be(List(4,10,18))
+  }
+
+  "A list with a valid subsequence" should "return true" in {
+    hasSubsequence(List(1,2,3,4), List(3,4)) should be(true)
+  }
+
+  "A list without a valid subsequence" should "return false" in {
+    hasSubsequence(List(1,2,3,4), List(1,3)) should be(false)
+  }
+
 }
