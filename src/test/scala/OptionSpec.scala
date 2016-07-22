@@ -1,4 +1,5 @@
 import org.scalatest._
+import OptionExamples._
 
 class OptionSpec extends FlatSpec with Matchers {
 
@@ -45,4 +46,37 @@ class OptionSpec extends FlatSpec with Matchers {
   "None that is filtered" should "still return none" in {
     None.filter(x => true) should be(None)
   }
+
+  "The variance of a sequence of elements" should "return Some(variance) when the seq isn't empty" in {
+    variance(Seq(1,2,3,4)) should be(Some(1.25)) //according to variance calculator online
+  }
+
+  "The variance of a sequence with no elements" should "return None" in {
+    variance(Seq()) should be(None) //according to variance calculator online
+  }
+
+  "Two Some(_) that have map2 called on them" should "return Some(f(_,_))" in {
+    map2(Some("a"), Some(1))((a:String,b) => a.concat(b.toString)) should be(Some("a1"))
+  }
+
+  "A Some(_) and a None that have map2 called on them" should "return None" in {
+    map2(Some("a"), None:Option[Int])((a:String,b) => a.concat(b.toString)) should be(None)
+  }
+
+  "A None and a Some(_) that have map2 called on them" should "return None" in {
+    map2(None:Option[String], Some(1))((a:String,b) => a.concat(b.toString)) should be(None)
+  }
+
+  "Two None that have map2 called on them" should "return None" in {
+    map2(None:Option[String], None:Option[Int])((a:String,b) => a.concat(b.toString)) should be(None)
+  }
+
+  "A list of Some(_) that has sequence called on it" should "return Some|(List(_))" in {
+    sequence(List(Some(1),Some(2), Some(3))) should be(Some(List(1,2,3)))
+  }
+
+  "A list with a None in it that has sequence called on it" should "return None" in {
+    sequence(List(Some(1),None, Some(3))) should be(None)
+  }
+
 }

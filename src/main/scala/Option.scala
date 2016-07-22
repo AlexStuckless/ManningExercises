@@ -21,3 +21,28 @@ trait Option[+A] {
   def filter(f: A => Boolean): Option[A] =
     this.flatMap(a => if(f(a)) Some(a) else None)
 }
+
+object OptionExamples{
+  def mean(xs: Seq[Double]): Option[Double] =
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.length)
+
+  def variance(xs: Seq[Double]): Option[Double] = {
+    val xsMean = mean(xs)
+    val varianceSeq: Option[Seq[Double]] = xsMean.map(m => xs.map(x => math.pow(x - m, 2)))
+    varianceSeq.flatMap(mean)
+  }
+
+  //So pretty easy to see how you get map 3, etc. But what about mapX? Is there a way to just make
+  //a map for a generic number of arguments????
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = {
+    a.flatMap( x => b.map( y => f(x,y)))
+  }
+
+  //This was janky multiple iterations in my notebook to get to this point
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
+    case(Cons(h,t)) => h.flatMap( x => sequence(t).map(y => Cons(x,y)))
+    case(Nil) => Some(Nil:List[A])
+  }
+}
+
