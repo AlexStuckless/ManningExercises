@@ -79,4 +79,12 @@ class OptionSpec extends FlatSpec with Matchers {
     sequence(List(Some(1),None, Some(3))) should be(None)
   }
 
+  "A list of Some(_) that has sequenceTraverse called on it" should "return Some|(List(_))" in {
+    sequenceTraverse(List(Some(1),Some(2), Some(3))) should be(Some(List(1,2,3)))
+  }
+
+  "A list with a None in it that has sequenceTraverse called on it" should "return None" in {
+    sequenceTraverse(List(Some(1),None, Some(3))) should be(None)
+  }
+
 }

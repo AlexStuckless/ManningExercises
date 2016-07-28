@@ -44,5 +44,14 @@ object OptionExamples{
     case(Cons(h,t)) => h.flatMap( x => sequence(t).map(y => Cons(x,y)))
     case(Nil) => Some(Nil:List[A])
   }
+
+  //so pretty much identical to the above logic but just sneak in the transform
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match {
+    case(Cons(h,t)) => f(h).flatMap( x => traverse(t)(f).map( y => Cons(x,y)))
+    case(Nil) => Some(Nil:List[B])
+  }
+
+  def sequenceTraverse[A](a: List[Option[A]]): Option[List[A]] =
+    traverse(a)(x => x)
 }
 
