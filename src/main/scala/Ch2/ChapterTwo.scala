@@ -1,3 +1,5 @@
+package Ch2
+
 /**
   * Chapter 1 exercises from the Manning functional programming in Scala text
   */

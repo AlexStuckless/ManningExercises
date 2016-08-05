@@ -1,3 +1,4 @@
+import Ch2.ChapterTwo
 import org.scalatest._
 
 class ChapterTwoSpec extends FlatSpec with Matchers {

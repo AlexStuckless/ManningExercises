@@ -1,4 +1,5 @@
 import org.scalatest._
+import Stream._
 
 class StreamSpec extends FlatSpec with Matchers {
 
@@ -54,7 +55,7 @@ class StreamSpec extends FlatSpec with Matchers {
 
   }
 
-  "A stream that has headOptionFoldRight called on it" should "return Some(h())" in {
+  "A stream that has headOptionFoldRight called on it" should "return Option.Some(h())" in {
 
   }
 

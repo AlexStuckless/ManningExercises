@@ -1,5 +1,9 @@
-case class Some[+A](get: A) extends Option[A]
+package Option
+
+import List._
+
 case object None extends Option[Nothing]
+case class Some[+A](get: A) extends Option[A]
 
 trait Option[+A] {
   def map[B](f: A => B): Option[B] = this match {
@@ -54,4 +58,3 @@ object OptionExamples{
   def sequenceTraverse[A](a: List[Option[A]]): Option[List[A]] =
     traverse(a)(x => x)
 }
-

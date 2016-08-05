@@ -1,3 +1,4 @@
+import Tree._
 import org.scalatest._
 import Tree._
 
